@@ -1,0 +1,158 @@
+##REQUIRED PACKAGE##
+LibImport<-function(){
+  library(stringr)
+  library(maps)
+  library(mapproj)
+  library(geosphere)
+}
+
+LoadDataset<-function(x){
+  y<-read.csv(x)
+  return(y)
+}
+  
+#input x is the dataset of train
+LocationData<-function(x){
+  y<-data.frame()
+  n<-length(x[,1])
+  for(j in 1:n){
+    y[j,1]=as.character(x[j,6])
+    y[(j+n),1]=as.character(x[j,7])
+  }
+  
+  return(unique(y))
+}
+
+
+getCityDatasetName<-function(x){
+y="city_ .csv"
+z=gsub(substr(y,6,6),substr(x,1,1),y)
+kDS<-read.csv(z)
+    for(j in 1:nrow(kDS)){
+      if (as.character(kDS[j,2])==x) {
+      x[2]<-(kDS[j,3])
+      x[3]<-(kDS[j,4])
+      }
+    }    
+
+  
+  return(x)
+}
+
+CoordinateDetail<-function(x){
+  
+  y<-data.frame()
+  for(j in 1:length(x[,1])){
+ y[j,1]<-x[j,1]#substr(x[j,1],1,1)
+    gcdn<-getCityDatasetName(y[j,1])
+    y[j,2]<-gcdn[2]
+    y[j,3]<-gcdn[3]
+  }
+  return(y)
+}
+
+
+UpdateTrainDetail<-function(x,y){
+  for (j in 1:nrow(y)){
+    for(i in 1:nrow(x)){
+#      print(class(y[j,2]))
+      if (as.character(x[i,6])==as.character(y[j,1])){
+        x[i,8]=(y[j,2])
+        x[i,9]=(y[j,3])
+      }
+      if (as.character(x[i,7])==as.character(y[j,1])){
+           x[i,10]=y[j,2]
+            x[i,11]=y[j,3]
+      }
+    }
+  }
+  return(x)
+}
+
+
+naming<-function(x){
+  names(x)[8]<-paste("FROM_LOC_LAT")
+  names(x)[9]<-paste("FROM_LOC_LONG")
+  names(x)[10]<-paste("TO_LOC_LAT")
+  names(x)[11]<-paste("TO_LOC_LONG")
+  return(x)
+}
+
+
+MapOfIndia<-function(){
+  
+  library(maps)
+  library(mapproj)
+  library(geosphere)
+#par(xaxt="n",las=2,mar=c(0,0,0,0))
+  par(mar=c(0,0,0,0))
+#GREY COLORED WORLD MAP
+xlim<- c(68,97)
+  ylim<-c(7.3,35.8)
+map("world",fill= TRUE,col="#b0b0b0",bg="#909090",xlim=xlim,ylim=ylim,namesonly=TRUE,resolution=1,)#,bg="#807070"
+}
+
+
+
+TrainPlot<-function(x,y){
+ 
+for(j in 1:nrow(x))
+  {
+  lat_from<-as.numeric(x[j,8])
+  lon_from<- as.numeric(x[j,9])
+  lat_to<- as.numeric(x[j,10])
+  lon_to<- as.numeric(x[j,11])
+  inter <- gcIntermediate(c(lon_from,lat_from),c(lon_to,lat_to),n=50,addStartEnd=TRUE)
+  lines(inter,col=y,lwd=0.02)#"red")
+  
+}
+}
+
+TrainLongLatMapping<-function(x){
+lds<-LoadDataset(x)
+#9,10 colum is for lat and long value of column 7
+#11,12 colum is for lat and long value of column 8
+#input is dataset source and destination name
+#city with log and lat values loaded in 26 different datasets
+#train dataset is loaded
+ld<-LocationData(lds)
+#make a dataset with all unique sources and destinations
+cd<-CoordinateDetail(ld)
+utd<-UpdateTrainDetail(lds,cd)
+
+utdn<-naming(utd)
+#load the corresponding source and destination locations in the train dataset
+return(utdn)
+
+}
+
+
+#MergeDataset
+
+main<-function(x,y){
+LibImport()
+
+Train<-TrainLongLatMapping(x)
+#ONLY FOR CHECKING <NA> values
+#print(Train)
+TrainPlot(Train,y)
+#dev.off()
+}
+
+
+MapOfIndia()
+
+#1
+main("MAIL_EXPRESS.csv","#CCEEFF")
+main("MAIL_EXPRESS1.csv","#CCEEFF")
+main("MAIL_EXPRESS2.csv","#CCEEFF")
+main("MAIL_EXPRESS3.csv","#CCEEFF")
+main("MAIL_EXPRESS4.csv","#CCEEFF")
+main("MAIL_EXPRESS5.csv","#CCEEFF")
+main("MAIL_EXPRESS6.csv","#CCEEFF")
+main("MAIL_EXPRESS7.csv","#CCEEFF")
+main("MAIL_EXPRESS8.csv","#CCEEFF")
+main("MAIL_EXPRESS9.csv","#CCEEFF")
+main("MAIL_EXPRESS10.csv","#CCEEFF")
+main("MAIL_EXPRESS11.csv","#CCEEFF")
+main("MAIL_EXPRESS12.csv","#CCEEFF")
