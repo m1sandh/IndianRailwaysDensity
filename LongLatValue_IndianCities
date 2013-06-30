@@ -1,0 +1,146 @@
+##GETTING THE REQUIRED PACKAGE##
+EnsurePackage<-function(x)
+{
+  x<-as.character(x)
+  if(!require(x,character.only=TRUE))
+  {
+    install.packages(pkgs=x,repos="http://cran.r-project.org")
+    require(x,character.only=TRUE)
+  }
+}
+EnsurePackage("XML")
+
+##REQUIRED PACKAGE##
+LibImport<-function(){
+library(RCurl)
+library(bitops)
+library(XML)
+}
+
+##FUNCTION FOR CONVERTING LONGITUDE AND LATITUDE VALUES IN NUMERICAL VALUE FROM EGREE AND MIN VALUES
+LatLongValue<-function(x){
+  val<-gsub("[0-9]*o","",x)
+  val
+  val1<-gsub("'[N/S/W/E]","",val)
+  val1<-as.integer(val1)
+  val1<-val1/60
+  val2<-gsub("o[0-9]*'[N/S/W/E]","",x)
+  val2=as.integer(val2)
+  val3=val2+val1
+  
+  return(val3)
+}
+
+##FUNCTION FRO GETING THE DATA FRAME OF CITY AN THEIR LATITUDE AND LONGITUDE VALUES
+urlDataframe<-function(x){
+# Download page using RCurl
+# You may need to set proxy details, etc.,  in the call to getURL
+theurl <- x #"http://www.indiapress.org/horoscope/a.html"
+webpage <- getURL(theurl)
+#webpage
+webpage <- readLines(tc <- textConnection(webpage)); close(tc)
+#webpage
+pagetree <- htmlTreeParse(webpage, error=function(...){})
+#pagetree
+names(webpage)
+#no of cities on the web page
+CityCount<-length(pagetree$children$html[2]$body[1]$table)
+#CityCount
+
+
+CityDetail<-data.frame()
+#CityDetail
+for(j in 1:CityCount){
+#for(j in 1:CityCount){
+  CityDetail[j,1]<-(pagetree$children$html[2]$body[1]$table[j]$tr[1]$td[1]$text$value)
+  # Latitude value
+  CityDetail[j,2]<-LatLongValue(pagetree$children$html[2]$body[1]$table[j]$tr[3]$td[1]$text$value)
+  
+  #Longitude value
+  CityDetail[j,3]<-LatLongValue(pagetree$children$html[2]$body[1]$table[j]$tr[5]$td[1]$text$value)
+}
+
+return(CityDetail)
+
+}
+
+
+datasetCSV<-function(x){
+  LibImport()
+  y<-urlDataframe(x)
+  return(y)
+  }
+
+
+
+CurrWorkingDir<-function(x){
+  getwd()
+  setwd(x)
+}
+
+#this function is not at all in use
+csvFile<-function(x){
+ u<-tolower(x)
+ htmlFile<-gsub("[a-z]*://[a-z]*.[a-z]*.[a-z]*/[a-z]*/","",u)
+ 
+ fileName<-gsub(".[a-z][a-z][a-z][a-z]","",htmlFile)
+ #csvFileName<-cat(fileName,"csv",sep=".")
+ print("-------")
+ print(cat(fileName,"csv",sep="."))
+ print("---=====----")
+return(cat(fileName,"csv",sep="."))
+}
+
+WriteDatasetToCSV<-function(x,y){
+  names(x)[1]<-paste("City")
+  names(x)[2]<-paste("Latitude")
+  names(x)[3]<-paste("Longitude")
+  
+  write.csv(x,file=y)#"a.csv")
+}
+
+
+#x is the site name for the extraction of data
+#y is the current working dirctory variable
+#z is the file name to be used as an output
+main<-function(x,y,z){
+u<-datasetCSV(x)
+CurrWorkingDir(y)
+#file<-csvFile(x)
+WriteDatasetToCSV(u,z)
+#WriteDatasetToCSV(z,csvFile(y))
+}
+
+
+
+
+main("http://www.indiapress.org/horoscope/a.html","E:/data analysis vedio Coursera/Practice/indian railways","city_a.csv")
+main("http://www.indiapress.org/horoscope/b.html","E:/data analysis vedio Coursera/Practice/indian railways","city_b.csv")
+main("http://www.indiapress.org/horoscope/c.html","E:/data analysis vedio Coursera/Practice/indian railways","city_c.csv")
+
+main("http://www.indiapress.org/horoscope/d.html","E:/data analysis vedio Coursera/Practice/indian railways","city_d.csv")
+main("http://www.indiapress.org/horoscope/e.html","E:/data analysis vedio Coursera/Practice/indian railways","city_e.csv")
+main("http://www.indiapress.org/horoscope/f.html","E:/data analysis vedio Coursera/Practice/indian railways","city_f.csv")
+
+main("http://www.indiapress.org/horoscope/g.html","E:/data analysis vedio Coursera/Practice/indian railways","city_g.csv")
+main("http://www.indiapress.org/horoscope/h.html","E:/data analysis vedio Coursera/Practice/indian railways","city_h.csv")
+main("http://www.indiapress.org/horoscope/i.html","E:/data analysis vedio Coursera/Practice/indian railways","city_i.csv")
+main("http://www.indiapress.org/horoscope/j.html","E:/data analysis vedio Coursera/Practice/indian railways","city_j.csv")
+main("http://www.indiapress.org/horoscope/k.html","E:/data analysis vedio Coursera/Practice/indian railways","city_k.csv")
+main("http://www.indiapress.org/horoscope/l.html","E:/data analysis vedio Coursera/Practice/indian railways","city_l.csv")
+main("http://www.indiapress.org/horoscope/m.html","E:/data analysis vedio Coursera/Practice/indian railways","city_m.csv")
+main("http://www.indiapress.org/horoscope/n.html","E:/data analysis vedio Coursera/Practice/indian railways","city_n.csv")
+main("http://www.indiapress.org/horoscope/o.html","E:/data analysis vedio Coursera/Practice/indian railways","city_o.csv")
+main("http://www.indiapress.org/horoscope/p.html","E:/data analysis vedio Coursera/Practice/indian railways","city_p.csv")
+
+main("http://www.indiapress.org/horoscope/q.html","E:/data analysis vedio Coursera/Practice/indian railways","city_q.csv")
+main("http://www.indiapress.org/horoscope/r.html","E:/data analysis vedio Coursera/Practice/indian railways","city_r.csv")
+main("http://www.indiapress.org/horoscope/s.html","E:/data analysis vedio Coursera/Practice/indian railways","city_s.csv")
+main("http://www.indiapress.org/horoscope/t.html","E:/data analysis vedio Coursera/Practice/indian railways","city_t.csv")
+main("http://www.indiapress.org/horoscope/u.html","E:/data analysis vedio Coursera/Practice/indian railways","city_u.csv")
+
+main("http://www.indiapress.org/horoscope/v.html","E:/data analysis vedio Coursera/Practice/indian railways","city_v.csv")
+main("http://www.indiapress.org/horoscope/w.html","E:/data analysis vedio Coursera/Practice/indian railways","city_w.csv")
+main("http://www.indiapress.org/horoscope/x.html","E:/data analysis vedio Coursera/Practice/indian railways","city_x.csv")
+main("http://www.indiapress.org/horoscope/y.html","E:/data analysis vedio Coursera/Practice/indian railways","city_y.csv")
+main("http://www.indiapress.org/horoscope/z.html","E:/data analysis vedio Coursera/Practice/indian railways","city_z.csv")
