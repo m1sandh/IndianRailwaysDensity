@@ -143,36 +143,4 @@ TrainPlot(Train,y)
 MapOfIndia()
 
 
-#6
 main("SHATABDI.csv","green")
-#3
-main("RAJDHANI.csv","red")
-main("RAJDHANI1.csv","red")
-#4
-main("JAN_SHATABDI.csv","blue")
-#5
-main("GARIB_RATH.csv","#FFFF00")#yellow
-#2
-main("SUPERFAST.csv","#CC00CC")
-main("SUPERFAST1.csv","#CC00CC")
-main("SUPERFAST2.csv","#CC00CC")
-main("SUPERFAST3.csv","#CC00CC")
-main("SUPERFAST4.csv","#CC00CC")
-main("SUPERFAST5.csv","#CC00CC")
-main("SUPERFAST6.csv","#CC00CC")
-main("SUPERFAST7.csv","#CC00CC")
-main("SUPERFAST8.csv","#CC00CC")
-#1
-main("MAIL_EXPRESS.csv","#CCEEFF")
-main("MAIL_EXPRESS1.csv","#CCEEFF")
-main("MAIL_EXPRESS2.csv","#CCEEFF")
-main("MAIL_EXPRESS3.csv","#CCEEFF")
-main("MAIL_EXPRESS4.csv","#CCEEFF")
-main("MAIL_EXPRESS5.csv","#CCEEFF")
-main("MAIL_EXPRESS6.csv","#CCEEFF")
-main("MAIL_EXPRESS7.csv","#CCEEFF")
-main("MAIL_EXPRESS8.csv","#CCEEFF")
-main("MAIL_EXPRESS9.csv","#CCEEFF")
-main("MAIL_EXPRESS10.csv","#CCEEFF")
-main("MAIL_EXPRESS11.csv","#CCEEFF")
-main("MAIL_EXPRESS12.csv","#CCEEFF")
