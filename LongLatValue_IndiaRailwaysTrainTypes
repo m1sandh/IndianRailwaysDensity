@@ -1,0 +1,375 @@
+##GETTING THE REQUIRED PACKAGE##
+EnsurePackage<-function(x)
+{
+  x<-as.character(x)
+  if(!require(x,character.only=TRUE))
+  {
+    install.packages(pkgs=x,repos="http://cran.r-project.org")
+    require(x,character.only=TRUE)
+  }
+}
+EnsurePackage("XML")
+
+##REQUIRED PACKAGE##
+LibImport<-function(){
+  library(RCurl)
+  library(bitops)
+  library(XML)
+}
+
+
+DatasetCleaning<-function(x){
+  TrainCount<-length(x[,1])
+##  print(length(x[,1]))
+##  print(x[,1])
+##the below lines are required for getting a clean dataset in the .csf files from the raw data.
+  for(j in 1:TrainCount){
+    x[j,5]<-x[j,3]
+    x[j,6]<-x[j,4]
+    x[j,5]<-gsub(" TERMINUS","",x[j,5])
+    x[j,6]<-gsub(" TERMINUS","",x[j,6])
+    x[j,5]<-gsub(" TRMUS","",x[j,5])
+    x[j,6]<-gsub(" TRMUS","",x[j,6])
+    x[j,5]<-gsub(" JN","",x[j,5])
+    x[j,6]<-gsub(" JN","",x[j,6])
+    x[j,5]<-gsub(" TRM","",x[j,5])
+    x[j,6]<-gsub(" TRM","",x[j,6])
+    x[j,5]<-gsub(" CY","",x[j,5])
+    x[j,6]<-gsub(" CY","",x[j,6])
+    x[j,5]<-gsub(" NR","",x[j,5])
+    x[j,6]<-gsub(" NR","",x[j,6])
+    x[j,5]<-gsub(" NE","",x[j,5])
+    x[j,6]<-gsub(" NE","",x[j,6])
+    x[j,5]<-gsub(" CST","",x[j,5])
+    x[j,6]<-gsub(" CST","",x[j,6])
+    x[j,5]<-gsub(" CNTL","",x[j,5])
+    x[j,6]<-gsub(" CNTL","",x[j,6])
+    x[j,5]<-gsub(" NR","",x[j,5])
+    x[j,6]<-gsub(" NR","",x[j,6])
+    x[j,5]<-gsub(" TOWN","",x[j,5])
+    x[j,6]<-gsub(" TOWN","",x[j,6])
+    x[j,5]<-gsub(" BG","",x[j,5])
+    x[j,6]<-gsub(" BG","",x[j,6])
+    x[j,5]<-gsub(" CANTT","",x[j,5])
+    x[j,6]<-gsub(" CANTT","",x[j,6])
+    x[j,5]<-gsub(" CANT","",x[j,5])
+    x[j,6]<-gsub(" CANT","",x[j,6])
+    x[j,5]<-gsub(" CITY","",x[j,5])
+    x[j,6]<-gsub(" CITY","",x[j,6])
+    x[j,5]<-gsub(" FORT","",x[j,5])
+    x[j,6]<-gsub(" FORT","",x[j,6])
+    x[j,5]<-gsub(" STN","",x[j,5])
+    x[j,6]<-gsub(" STN","",x[j,6])
+    x[j,5]=gsub(" ROAD","",x[j,5])
+    x[j,6]=gsub(" ROAD","",x[j,6])
+    x[j,5]=gsub(" EGMORE","",x[j,5])  
+    x[j,6]=gsub(" EGMORE","",x[j,6]) 
+    x[j,5]=gsub("CHENNAI CENTRAL","CHENNAI",x[j,5])  
+    x[j,6]=gsub("CHENNAI CENTRAL","CHENNAI",x[j,6])  
+    x[j,5]=gsub("ANAND VIHAR","NEW DELHI",x[j,5])  
+    x[j,6]=gsub("ANAND VIHAR","NEW DELHI",x[j,6])
+    x[j,5]=gsub("KANPUR CENTRAL","KANPUR",x[j,5])  
+    x[j,6]=gsub("KANPUR CENTRAL","KANPUR",x[j,6])     
+    x[j,5]=gsub("CHENNAI","MADRAS (CHENNAI)",x[j,5])  
+    x[j,6]=gsub("CHENNAI","MADRAS (CHENNAI)",x[j,6])
+    x[j,5]=gsub("MUMBAI","BOMBAY",x[j,5])  
+    x[j,6]=gsub("MUMBAI","BOMBAY",x[j,6]) 
+    x[j,5]=gsub("H NIZAMUDDIN","HAZRAT NIZAMUDDIN",x[j,5])  
+    x[j,6]=gsub("H NIZAMUDDIN","HAZRAT NIZAMUDDIN",x[j,6]) 
+    x[j,5]=gsub("DIBRUGARH TOWN","DIBRUGARH",x[j,5])  
+    x[j,6]=gsub("DIBRUGARH TOWN","DIBRUGARH",x[j,6]) 
+    x[j,5]=gsub("JAMMU TAWI","JAMMU (TAWI)",x[j,5])  
+    x[j,6]=gsub("JAMMU TAWI","JAMMU (TAWI)",x[j,6]) 
+    x[j,5]=gsub("RJNDR NGR BIHAR","RAJENDRANAGAR",x[j,5])  
+    x[j,6]=gsub("RJNDR NGR BIHAR","RAJENDRANAGAR",x[j,6]) 
+    x[j,5]=gsub(" CST"," CENTRAL",x[j,5])  
+    x[j,6]=gsub(" CST"," CENTRAL",x[j,6]) 
+    x[j,5]=gsub("LOKMANYATILAK T","KURLA",x[j,5])  
+    x[j,6]=gsub("LOKMANYATILAK T","KURLA",x[j,6]) 
+    x[j,5]=gsub("DIGHA FLAG","MEDINIPUR",x[j,5])  
+    x[j,6]=gsub("DIGHA FLAG","MEDINIPUR",x[j,6]) 
+    x[j,5]=gsub("DELHI S ROHILLA","NEW DELHI",x[j,5])  
+    x[j,6]=gsub("DELHI S ROHILLA","NEW DELHI",x[j,6]) 
+    x[j,5]=gsub("ADRSH NGR DELHI","NEW DELHI",x[j,5])  
+    x[j,6]=gsub("ADRSH NGR DELHI","NEW DELHI",x[j,6]) 
+    x[j,5]=gsub("SHALIMAR","HOWRAH",x[j,5])  
+    x[j,6]=gsub("SHALIMAR","HOWRAH",x[j,6]) 
+    x[j,5]=gsub("DHACA","DHAKA",x[j,5])  
+    x[j,6]=gsub("DHACA","DHAKA",x[j,6]) 
+    x[j,5]=gsub("KATHGODAM","HALDWANI",x[j,5])  
+    x[j,6]=gsub("KATHGODAM","HALDWANI",x[j,6]) 
+    x[j,5]=gsub("MAYILADUTURAI J","NAGAPATTINAM",x[j,5])  
+    x[j,6]=gsub("MAYILADUTURAI J","NAGAPATTINAM",x[j,6]) 
+    x[j,5]=gsub("UNA HIMACHAL","UNA (HIMACHAL PRADESH)",x[j,5])  
+    x[j,6]=gsub("UNA HIMACHAL","UNA (HIMACHAL PRADESH)",x[j,6]) 
+    x[j,5]=gsub("PUDUCHERRY","PONDICHERRY",x[j,5])  
+    x[j,6]=gsub("PUDUCHERRY","PONDICHERRY",x[j,6]) 
+    x[j,5]=gsub("ISLAMPUR","ISLAMPUR (BIHAR)",x[j,5])  
+    x[j,6]=gsub("ISLAMPUR","ISLAMPUR (BIHAR)",x[j,6]) 
+    x[j,5]=gsub("ASANSOL","ASANSOL (WEST BENGAL)",x[j,5])  
+    x[j,6]=gsub("ASANSOL","ASANSOL (WEST BENGAL)",x[j,6]) 
+    x[j,5]=gsub("SAI P NILAYAM","PUTTAPARTY",x[j,5])  
+    x[j,6]=gsub("SAI P NILAYAM","PUTTAPARTY",x[j,6]) 
+    x[j,5]=gsub("H SAHIB NANDED","NANDED",x[j,5])  
+    x[j,6]=gsub("H SAHIB NANDED","NANDED",x[j,6]) 
+    x[j,5]=gsub("SHRI GANGANAGAR","SRI GANGANAGAR",x[j,5])  
+    x[j,6]=gsub("SHRI GANGANAGAR","SRI GANGANAGAR",x[j,6]) 
+    x[j,5]=gsub("BILASPUR","BILASPUR (MADHYA PRADESH)",x[j,5])
+    x[j,6]=gsub("BILASPUR","BILASPUR (MADHYA PRADESH)",x[j,6])
+    x[j,5]=gsub("GUWAHATI","GAUHATI",x[j,5])
+    x[j,6]=gsub("GUWAHATI","GAUHATI",x[j,6])
+    x[j,5]=gsub("ERANAKULAM","ERNAKULAM",x[j,5])
+    x[j,6]=gsub("ERANAKULAM","ERNAKULAM",x[j,6])
+    
+    x[j,5]=gsub("KOLKATA","CALCUTTA",x[j,5])  
+    x[j,6]=gsub("KOLKATA","CALCUTTA",x[j,6])   
+    
+    
+    x[j,5]=gsub("NAGAPATTINAM","NAGAPPATTINAM",x[j,5])  
+    x[j,6]=gsub("NAGAPATTINAM","NAGAPPATTINAM",x[j,6])  
+    x[j,5]=gsub("KOTA","KOTA (RAJASTHAN)",x[j,5])  
+    x[j,6]=gsub("KOTA","KOTA (RAJASTHAN)",x[j,6])  
+    x[j,5]=gsub("RAIGARH","RAIGARH (MADHYA PRADESH)",x[j,5])  
+    x[j,6]=gsub("RAIGARH","RAIGARH (MADHYA PRADESH)",x[j,6])  
+    x[j,5]=gsub("AURANGABAD","AURANGABAD (MAHARASHTRA)",x[j,5])  
+    x[j,6]=gsub("AURANGABAD","AURANGABAD (MAHARASHTRA)",x[j,6]) 
+    x[j,5]=gsub("BARABIL","BARBIL",x[j,5])  
+    x[j,6]=gsub("BARABIL","BARBIL",x[j,6])  
+    x[j,5]=gsub("VISHAKAPATNAM","VISHAKHAPATNAM",x[j,5])  
+    x[j,6]=gsub("VISHAKAPATNAM","VISHAKHAPATNAM",x[j,6])  
+    x[j,5]=gsub("KOCHUVELI","TRIVANDRUM",x[j,5])  
+    x[j,6]=gsub("KOCHUVELI","TRIVANDRUM",x[j,6])  
+    x[j,5]=gsub("SIMLA","SIMLA (HIMACHAL PRADESH)",x[j,5])  
+    x[j,6]=gsub("SIMLA","SIMLA (HIMACHAL PRADESH)",x[j,6])  
+    x[j,5]=gsub("MANDUADIH","VARANASI",x[j,5])
+    x[j,6]=gsub("MANDUADIH","VARANASI",x[j,6])
+    x[j,5]=gsub("KANYAKUMARI","KANNIYAKUMARI",x[j,5])
+    x[j,6]=gsub("KANYAKUMARI","KANNIYAKUMARI",x[j,6])
+    x[j,5]=gsub("SAMBALPUR","SAMBALPUR (ORI)",x[j,5])
+    x[j,6]=gsub("SAMBALPUR","SAMBALPUR (ORI)",x[j,6])
+    x[j,5]=gsub("PUTTAPARTY","PUTTAPARTHY",x[j,5])
+    x[j,6]=gsub("PUTTAPARTY","PUTTAPARTHY",x[j,6])
+    x[j,5]=gsub("KHARAGPUR","KHARAGPUR (WEST BENGAL)",x[j,5])
+    x[j,6]=gsub("KHARAGPUR","KHARAGPUR (WEST BENGAL)",x[j,6])
+    x[j,5]=gsub("VASCO DA GAMA","VASCODAGAMA",x[j,5])
+    x[j,6]=gsub("VASCO DA GAMA","VASCODAGAMA",x[j,6])
+    x[j,5]=gsub("UDAIPUR CITY","UDAIPUR (RAJ.)",x[j,5])
+    x[j,6]=gsub("UDAIPUR CITY","UDAIPUR (RAJ.)",x[j,6])
+    x[j,5]=gsub("VILLUPARAM","VILLUPURAM",x[j,5])
+    x[j,6]=gsub("VILLUPARAM","VILLUPURAM",x[j,6])
+    x[j,5]=gsub("PARTAPGARH","PRATAPGARH (U.P.)",x[j,5])
+    x[j,6]=gsub("PARTAPGARH","PRATAPGARH (U.P.)",x[j,6])
+    x[j,5]=gsub("AMRAVATI","AMRAVATI (MAHARASTRA)",x[j,5])
+    x[j,6]=gsub("AMRAVATI","AMRAVATI (MAHARASTRA)",x[j,6])
+    x[j,5]=gsub("KACHEGUDA","HYDERABAD",x[j,5])
+    x[j,6]=gsub("KACHEGUDA","HYDERABAD",x[j,6])
+    x[j,5]=gsub("TIRUCHCHIRAPALI","TIRUCHCHIRAPPALLI",x[j,5])
+    x[j,6]=gsub("TIRUCHCHIRAPALI","TIRUCHCHIRAPPALLI",x[j,6])
+    x[j,5]=gsub("AGRA FORT","AGRA",x[j,5])
+    x[j,6]=gsub("AGRA FORT","AGRA",x[j,6])
+    x[j,5]=gsub("HYDERABAD DECAN","HYDERABAD",x[j,5])
+    x[j,6]=gsub("HYDERABAD DECAN","HYDERABAD",x[j,6])
+    x[j,5]=gsub("BOLPUR S NIKTN","BOLPUR (SHANTINIKETAN)",x[j,5])
+    x[j,6]=gsub("BOLPUR S NIKTN","BOLPUR (SHANTINIKETAN)",x[j,6])
+    x[j,5]=gsub("SANTRAGACHI","HOWRAH",x[j,5])
+    x[j,6]=gsub("SANTRAGACHI","HOWRAH",x[j,6])
+    x[j,5]=gsub(" PORT","",x[j,5])
+    x[j,6]=gsub(" PORT","",x[j,6])
+    x[j,5]=gsub("SOLAPUR","SOLAPUR (MAH)",x[j,5])
+    x[j,6]=gsub("SOLAPUR","SOLAPUR (MAH)",x[j,6])
+    x[j,5]=gsub("UDAIPUR","UDAIPUR (RAJ.)",x[j,5])
+    x[j,6]=gsub("UDAIPUR","UDAIPUR (RAJ.)",x[j,6])
+    x[j,5]=gsub("KAMAKHYA","GAUHATI",x[j,5])
+    x[j,6]=gsub("KAMAKHYA","GAUHATI",x[j,6])
+    x[j,5]=gsub("C SHAHUMHARAJ T","KOLHAPUR (MAHARASHTRA)",x[j,5])
+    x[j,6]=gsub("C SHAHUMHARAJ T","KOLHAPUR (MAHARASHTRA)",x[j,6])
+    x[j,5]=gsub("SENGOTTAI","TIRUNELVELI",x[j,5])
+    x[j,6]=gsub("SENGOTTAI","TIRUNELVELI",x[j,6])
+    x[j,5]=gsub("PALAKKAD","PALGHAT",x[j,5])
+    x[j,6]=gsub("PALAKKAD","PALGHAT",x[j,6])
+    x[j,5]=gsub("MANUGURU","KHAMMAM",x[j,5])
+    x[j,6]=gsub("MANUGURU","KHAMMAM",x[j,6])
+    x[j,5]=gsub("KHAJURAHO","KHAJRAHO",x[j,5])
+    x[j,6]=gsub("KHAJURAHO","KHAJRAHO",x[j,6])
+    x[j,5]=gsub("METUPALAIYAM","METTUPPALAIYAM",x[j,5])
+    x[j,6]=gsub("METUPALAIYAM","METTUPPALAIYAM",x[j,6])
+    x[j,5]=gsub("BHUSAVAL","BHUSAWAL",x[j,5])
+    x[j,6]=gsub("BHUSAVAL","BHUSAWAL",x[j,6])
+    x[j,5]=gsub("CHHAPRA","CHHAPRA (BIH)",x[j,5])
+    x[j,6]=gsub("CHHAPRA","CHHAPRA (BIH)",x[j,6])
+    x[j,5]=gsub("NANGAL DAM","NANGAL",x[j,5])
+    x[j,6]=gsub("NANGAL DAM","NANGAL",x[j,6])
+    x[j,5]=gsub("BARAUNI","BARAUNI (BIHAR)",x[j,5])
+    x[j,6]=gsub("BARAUNI","BARAUNI (BIHAR)",x[j,6])
+    x[j,5]=gsub("KOLLAM","QUILON",x[j,5])
+    x[j,6]=gsub("KOLLAM","QUILON",x[j,6])
+    x[j,5]=gsub("BAPUDM MOTIHARI","MOTIHARI",x[j,5])
+    x[j,6]=gsub("BAPUDM MOTIHARI","MOTIHARI",x[j,6])
+    x[j,5]=gsub("MACHELIPATNAM","MACHILIPATNAM",x[j,5])
+    x[j,6]=gsub("MACHELIPATNAM","MACHILIPATNAM",x[j,6])
+    x[j,5]=gsub("DEHRI ON SONE","DEHRI",x[j,5])
+    x[j,6]=gsub("DEHRI ON SONE","DEHRI",x[j,6])
+    x[j,5]=gsub("BHAGAT KI KOTHI","JODHPUR",x[j,5])
+    x[j,6]=gsub("BHAGAT KI KOTHI","JODHPUR",x[j,6])
+    x[j,5]=gsub("SAWANTWADI","SAVANTVADI",x[j,5])
+    x[j,6]=gsub("SAWANTWADI","SAVANTVADI",x[j,6])
+    x[j,5]=gsub("KANNUR","CANNANORE",x[j,5])
+    x[j,6]=gsub("KANNUR","CANNANORE",x[j,6])
+    x[j,5]=gsub("NAGARSOL","AURANGABAD (MAHARASHTRA)",x[j,5])
+    x[j,6]=gsub("NAGARSOL","AURANGABAD (MAHARASHTRA)",x[j,6])
+    x[j,5]=gsub("SHIMOGA","SHIMOGA (KAR)",x[j,5])
+    x[j,6]=gsub("SHIMOGA","SHIMOGA (KAR)",x[j,6])
+    x[j,5]=gsub("AZIMGANJ","AZIMGANJ (WB)",x[j,5])
+    x[j,6]=gsub("AZIMGANJ","AZIMGANJ (WB)",x[j,6])
+    x[j,5]=gsub("GURUVAYUR","TRICHUR",x[j,5])
+    x[j,6]=gsub("GURUVAYUR","TRICHUR",x[j,6])
+    x[j,5]=gsub("BERHAMPORE CRT","BAHARAMPUR",x[j,5])
+    x[j,6]=gsub("BERHAMPORE CRT","BAHARAMPUR",x[j,6])
+    x[j,5]=gsub("ALIPUR DUAR","ALIPUR DUAR (WB)",x[j,5])
+    x[j,6]=gsub("ALIPUR DUAR","ALIPUR DUAR (WB)",x[j,6])
+    x[j,5]=gsub("NABADWIP DHAM","NABADWIP",x[j,5])
+    x[j,6]=gsub("NABADWIP DHAM","NABADWIP",x[j,6])
+    x[j,5]=gsub("BALLIA","BALLIA (UP)",x[j,5])
+    x[j,6]=gsub("BALLIA","BALLIA (UP)",x[j,6])
+    x[j,5]=gsub("JAMALPUR","JAMALPUR (BIHAR)",x[j,5])
+    x[j,6]=gsub("JAMALPUR","JAMALPUR (BIHAR)",x[j,6])
+    x[j,5]=gsub("NEW TINSUKIA","TINSUKIA",x[j,5])
+    x[j,6]=gsub("NEW TINSUKIA","TINSUKIA",x[j,6])
+    x[j,5]=gsub("MURKEONGSELEK","MURKONG SELEK",x[j,5])
+    x[j,6]=gsub("MURKEONGSELEK","MURKONG SELEK",x[j,6])
+    x[j,5]=gsub("RANGIYA","RANGIA",x[j,5])
+    x[j,6]=gsub("RANGIYA","RANGIA",x[j,6])
+    x[j,5]=gsub("BIJAPUR","BIJAPUR (KARNATAKA)",x[j,5])
+    x[j,6]=gsub("BIJAPUR","BIJAPUR (KARNATAKA)",x[j,6])
+    x[j,5]=gsub("SIRPUR KAGAZNGR","KAGAZNAGAR",x[j,5])
+    x[j,6]=gsub("SIRPUR KAGAZNGR","KAGAZNAGAR",x[j,6])
+    x[j,5]=gsub("NEW COOCH BEHAR","COOCH BIHAR (WB)",x[j,5])
+    
+    x[j,6]=gsub("NEW COOCH BEHAR","COOCH BIHAR (WB)",x[j,6])
+    x[j,5]=gsub("KANPUR ANWRGANJ","KANPUR",x[j,5])
+    x[j,6]=gsub("KANPUR ANWRGANJ","KANPUR",x[j,6])
+    x[j,5]=gsub("VELANKANNI","NAGAPPATTINAM",x[j,5])
+    x[j,6]=gsub("VELANKANNI","NAGAPPATTINAM",x[j,6])
+    x[j,5]=gsub("AISHBAGH","AISHBAGH JN.",x[j,5])
+    x[j,6]=gsub("AISHBAGH","AISHBAGH JN.",x[j,6])
+    x[j,5]=gsub("AKOLA","AKOLA (BOMBAY)",x[j,5])
+    x[j,6]=gsub("AKOLA","AKOLA (BOMBAY)",x[j,6])
+    x[j,5]=gsub("GANDHINAGAR CAP","GANDHINAGAR",x[j,5])
+    x[j,6]=gsub("GANDHINAGAR CAP","GANDHINAGAR",x[j,6])
+    x[j,5]=gsub("NEW ALIPURDAUR","ALIPUR DUAR (WB)",x[j,5])
+    x[j,6]=gsub("NEW ALIPURDAUR","ALIPUR DUAR (WB)",x[j,6])
+  }
+  return(x)
+}
+
+
+##FUNCTION FRO GETING THE DATA FRAME OF CITY AN THEIR LATITUDE AND LONGITUDE VALUES
+urlDataframe<-function(x){
+  # Download page using RCurl
+  # You may need to set proxy details, etc.,  in the call to getURL
+  theurl <- x #"http://www.indiapress.org/horoscope/a.html"
+  webpage <- getURL(theurl)  
+  #webpage
+  webpage <- readLines(tc <- textConnection(webpage)); close(tc)
+  #webpage
+  pagetree <- htmlTreeParse(webpage, error=function(...){})
+  #pagetree
+  names(webpage)
+  #no of trains on the web page for a particular train type
+  TrainCount<-length(pagetree$children$html[2]$body[3]$table[1]$tr[1]$td[2]$div[3]$div[3]$table)
+  TrainDetail<-data.frame()
+  #CityDetail
+  
+  for(j in 2:TrainCount){
+    #TRAIN NO
+    TrainDetail[(j-1),1]<-(pagetree$children$html[2]$body[3]$table[1]$tr[1]$td[2]$div[3]$div[3]$table[j]$tr[1]$td[1]$a[1]$text$value)
+    #TRAIN NAME
+    TrainDetail[(j-1),2]<-(pagetree$children$html[2]$body[3]$table[1]$tr[1]$td[2]$div[3]$div[3]$table[j]$tr[2]$td[1]$a[1]$text$value)
+    #FROM STATION OF THE TRAIN    
+    TrainDetail[(j-1),3]<-(pagetree$children$html[2]$body[3]$table[1]$tr[1]$td[2]$div[3]$div[3]$table[j]$tr[3]$td[1]$text$value)
+    #TO STATION OF THE TRAIN
+    
+    TrainDetail[(j-1),4]<-(pagetree$children$html[2]$body[3]$table[1]$tr[1]$td[2]$div[3]$div[3]$table[j]$tr[4]$td[1]$text$value)
+  
+  }
+  v<-DatasetCleaning(TrainDetail)
+  ##print("----------------")
+##  print(v)
+  ##print("----------------")
+  
+  #return(TrainDetail)
+  return(v)
+  }
+
+datasetCSV<-function(x){
+  
+  LibImport()
+  y<-urlDataframe(x)
+  return(y)
+  }
+
+
+
+CurrWorkingDir<-function(x){
+  getwd()
+  setwd(x)
+}
+
+
+
+WriteDatasetToCSV<-function(x,y){  
+  
+  names(x)[1]<-paste("TRAIN NO")
+  names(x)[2]<-paste("TRAIN NAME")
+  names(x)[3]<-paste("FROM STATION")
+  names(x)[4]<-paste("TO STATION")
+  names(x)[5]<-paste("FROM_LOCATION")
+  names(x)[6]<-paste("TO_LOCATION")
+  write.csv(x,file=y)#"a.csv")
+}
+
+
+
+#x is the site name for the extraction of data
+#y is the current working dirctory variable
+#z is the file name to be used as an output
+
+main<-function(x,y,z){
+  u<-datasetCSV(x)
+  CurrWorkingDir(y)
+  WriteDatasetToCSV(u,z)
+#dev.off()
+
+}
+
+
+
+
+main("http://www.90di.com/schedule/train/SHATABDI.html","E:/data analysis vedio Coursera/Practice/indian railways","SHATABDI.csv")
+main("http://www.90di.com/schedule/train/index.html","E:/data analysis vedio Coursera/Practice/indian railways","RAJDHANI.csv")
+main("http://www.90di.com/schedule/train/index1.html","E:/data analysis vedio Coursera/Practice/indian railways","RAJDHANI1.csv")
+main("http://www.90di.com/schedule/train/JAN_SHATABDI.html","E:/data analysis vedio Coursera/Practice/indian railways","JAN_SHATABDI.csv")
+main("http://www.90di.com/schedule/train/RAIL_MOTOR.html","E:/data analysis vedio Coursera/Practice/indian railways","GARIB_RATH.csv")
+main("http://www.90di.com/schedule/train/SUPERFAST.html","E:/data analysis vedio Coursera/Practice/indian railways","SUPERFAST.csv")
+main("http://www.90di.com/schedule/train/SUPERFAST1.html","E:/data analysis vedio Coursera/Practice/indian railways","SUPERFAST1.csv")
+main("http://www.90di.com/schedule/train/SUPERFAST2.html","E:/data analysis vedio Coursera/Practice/indian railways","SUPERFAST2.csv")
+main("http://www.90di.com/schedule/train/SUPERFAST3.html","E:/data analysis vedio Coursera/Practice/indian railways","SUPERFAST3.csv")
+main("http://www.90di.com/schedule/train/SUPERFAST4.html","E:/data analysis vedio Coursera/Practice/indian railways","SUPERFAST4.csv")
+main("http://www.90di.com/schedule/train/SUPERFAST5.html","E:/data analysis vedio Coursera/Practice/indian railways","SUPERFAST5.csv")
+main("http://www.90di.com/schedule/train/SUPERFAST6.html","E:/data analysis vedio Coursera/Practice/indian railways","SUPERFAST6.csv")
+main("http://www.90di.com/schedule/train/SUPERFAST7.html","E:/data analysis vedio Coursera/Practice/indian railways","SUPERFAST7.csv")
+main("http://www.90di.com/schedule/train/SUPERFAST8.html","E:/data analysis vedio Coursera/Practice/indian railways","SUPERFAST8.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS1.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS1.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS2.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS2.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS3.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS3.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS4.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS4.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS5.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS5.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS6.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS6.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS7.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS7.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS8.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS8.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS9.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS9.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS10.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS10.csv")
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS11.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS11.csv")
+
+main("http://www.90di.com/schedule/train/MAIL_EXPRESS12.html","E:/data analysis vedio Coursera/Practice/indian railways","MAIL_EXPRESS12.csv")
